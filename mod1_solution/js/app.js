@@ -12,6 +12,16 @@ function LunchCheckController($scope) {
   $scope.generateMsg = function() {
     var itemsCnt = getNumOfItems($scope.lunchItems);
     $scope.outputMsg = getMsgBasedOnNumOfItems(itemsCnt);
+    setOutputMsgColor($scope,itemsCnt);
+  };
+
+  function setOutputMsgColor($scope,itemsCnt) {
+    if(itemsCnt === 0) {
+      $scope.outputMsgColor = {"color":"red"};
+    }
+    else {
+      $scope.outputMsgColor = {"color":"green"};
+    }
   };
 
   function getNumOfItems(items) {
