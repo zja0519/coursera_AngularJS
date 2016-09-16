@@ -15,14 +15,14 @@
          <div class="form-group">
              <input id="lunch-menu" type="text"
              placeholder="list comma separated dishes you usually have for lunch(doesn't count empty item)"
-             class="form-control" ng-model="lunchItems">
+             class="form-control" ng-model="lunchItems" ng-style="borderColor">
          </div>
          <div class="form-group">
              <button class="btn btn-default" ng-click="generateMsg();">Check If Too Much</button>
          </div>
-         <div class="form-group message">
+         <div class="form-group message" ng-style="outputMsgColor">
            <!-- Your message can go here. -->
-           <p ng-style="outputMsgColor">{{outputMsg}}</p>
+           {{outputMsg}}
          </div>
    </div>
    <script src="js/angular.min.js"></script>

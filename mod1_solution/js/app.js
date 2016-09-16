@@ -12,15 +12,17 @@ function LunchCheckController($scope) {
   $scope.generateMsg = function() {
     var itemsCnt = getNumOfItems($scope.lunchItems);
     $scope.outputMsg = getMsgBasedOnNumOfItems(itemsCnt);
-    setOutputMsgColor($scope,itemsCnt);
+    setColor($scope,itemsCnt);
   };
 
-  function setOutputMsgColor($scope,itemsCnt) {
+  function setColor($scope,itemsCnt) {
     if(itemsCnt === 0) {
       $scope.outputMsgColor = {"color":"red"};
+      $scope.borderColor = {"border-color": "red"};
     }
     else {
       $scope.outputMsgColor = {"color":"green"};
+      $scope.borderColor = {"border-color":"green"};
     }
   };
 
@@ -54,4 +56,4 @@ function LunchCheckController($scope) {
 })();
 
 //checked with min version
-//!function(){"use strict";function t(t){function n(t,n){0===n?t.outputMsgColor={color:"red"}:t.outputMsgColor={color:"green"}}function o(t){var n=0,o=t.split(",");for(var r in o)null!==o[r]&&""!==o[r].trim()&&n++;return n}function r(t){var n;return n=1>t?"Please enter data first":t>=1&&3>=t?"Enjoy!":"Too much!"}t.lunchItems="",t.outputMsg="",t.generateMsg=function(){var u=o(t.lunchItems);t.outputMsg=r(u),n(t,u)}}angular.module("LunchCheck",[]).controller("LunchCheckController",t),t.$inject=["$scope"]}();
+//!function(){"use strict";function o(o){function r(o,r){0===r?(o.outputMsgColor={color:"red"},o.borderColor={"border-color":"red"}):(o.outputMsgColor={color:"green"},o.borderColor={"border-color":"green"})}function e(o){var r=0,e=o.split(",");for(var n in e)null!==e[n]&&""!==e[n].trim()&&r++;return r}function n(o){var r;return r=1>o?"Please enter data first":o>=1&&3>=o?"Enjoy!":"Too much!"}o.lunchItems="",o.outputMsg="",o.generateMsg=function(){var t=e(o.lunchItems);o.outputMsg=n(t),r(o,t)}}angular.module("LunchCheck",[]).controller("LunchCheckController",o),o.$inject=["$scope"]}();
