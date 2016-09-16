@@ -15,7 +15,15 @@ function LunchCheckController($scope) {
   };
 
   function getNumOfItems(items) {
-    return (items==null||items=="")?0:items.split(",").length;
+    //return (items==null||items=="")?0:items.split(",").length;
+    var intemCnt = 0;
+    var itemArry = items.split(",");
+    for(var i in itemArry) {
+      if(itemArry[i]!==null && itemArry[i].trim()!=="") {
+        intemCnt++;
+      }
+    }
+    return intemCnt;
   };
 
   function getMsgBasedOnNumOfItems(itemsCnt) {
