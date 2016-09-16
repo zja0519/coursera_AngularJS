@@ -52,3 +52,6 @@ function LunchCheckController($scope) {
 };
 
 })();
+
+//checked with min version
+//!function(){"use strict";function t(t){function n(t,n){0===n?t.outputMsgColor={color:"red"}:t.outputMsgColor={color:"green"}}function o(t){var n=0,o=t.split(",");for(var r in o)null!==o[r]&&""!==o[r].trim()&&n++;return n}function r(t){var n;return n=1>t?"Please enter data first":t>=1&&3>=t?"Enjoy!":"Too much!"}t.lunchItems="",t.outputMsg="",t.generateMsg=function(){var u=o(t.lunchItems);t.outputMsg=r(u),n(t,u)}}angular.module("LunchCheck",[]).controller("LunchCheckController",t),t.$inject=["$scope"]}();
