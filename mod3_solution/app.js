@@ -4,8 +4,28 @@
 angular.module('NarrowItDownApp', [])
 .controller('NarrowItDownController', NarrowItDownControllerFunc)
 .service('MenuSearchService', MenuSearchServiceFunc)
-.constant('ApiBasePath', "https://davids-restaurant.herokuapp.com");
+.constant('ApiBasePath', "https://davids-restaurant.herokuapp.com")
+.directive('foundItems', FoundItemsDirective);
 
+
+function FoundItemsDirective() {
+  var ddo = {
+    templateUrl: 'foundItems.html',
+    scope: {
+      foundItem: '<',
+      onRemove: '&'
+    },
+    controller: FoundItemsDirectiveController,
+    controllerAs: 'list',
+    bindToController: true
+  };
+
+  return ddo;
+}
+
+function FoundItemsDirectiveController() {
+
+}
 
 NarrowItDownControllerFunc.$inject = ['MenuSearchService'];
 function NarrowItDownControllerFunc(MenuSearchServiceFunc) {
@@ -13,6 +33,10 @@ function NarrowItDownControllerFunc(MenuSearchServiceFunc) {
   menu.items = MenuSearchServiceFunc.getFoundItems();
   menu.sendRequest = function() {
       MenuSearchServiceFunc.getMatchedMenuItems(menu.searchTerm);
+  };
+
+  menu.removeItem = function(index) {
+      MenuSearchServiceFunc.removeItem(index);
   };
 }
 
@@ -37,8 +61,12 @@ function MenuSearchServiceFunc($http, ApiBasePath) {
   };
 
   service.getFoundItems = function() {
-    console.log(foundItems);
+    //console.log(foundItems);
     return foundItems;
+  };
+
+  service.removeItem = function(index) {
+    foundItems.splice(index, 1);
   };
 }
 
