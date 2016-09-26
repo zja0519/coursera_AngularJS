@@ -10,51 +10,36 @@ angular.module('NarrowItDownApp', [])
 NarrowItDownControllerFunc.$inject = ['MenuSearchService'];
 function NarrowItDownControllerFunc(MenuSearchServiceFunc) {
   var menu = this;
-
+  menu.items = MenuSearchServiceFunc.getFoundItems();
   menu.sendRequest = function() {
-      var promise = MenuSearchServiceFunc.getMatchedMenuItems();
-
-      promise.then(function (response) {
-        menu.items = response.data.menu_items;
-        //console.log(response.data);
-      })
-      .catch(function (error) {
-        console.log("Something went terribly wrong.");
-      });
-  }
-
-  // menu.logMenuItems = function (shortName) {
-  //   var promise = MenuSearchServiceFunc.getMenuForCategory(shortName);
-  //
-  //   promise.then(function (response) {
-  //     console.log(response.data);
-  //   })
-  //   .catch(function (error) {
-  //     console.log(error);
-  //   })
-  // };
-
-  function narrowDownItems(keyWords) {
-
-  }
+      MenuSearchServiceFunc.getMatchedMenuItems(menu.searchTerm);
+  };
 }
 
 
 MenuSearchServiceFunc.$inject = ['$http', 'ApiBasePath']
 function MenuSearchServiceFunc($http, ApiBasePath) {
   var service = this;
-
-  service.getMatchedMenuItems = function () {
-    var response = $http({
-      method: "GET",
-      url: (ApiBasePath + "/menu_items.json")
-      // params: {
-      //   category: shortName
-      // }
+  var foundItems=[];
+  service.getMatchedMenuItems = function (searchTerm) {
+    $http({
+        method: "GET",
+        url: (ApiBasePath + "/menu_items.json")
+      }).then(function (response) {
+      // process result and only keep items that match
+      var items = response.data.menu_items;
+      if(foundItems.length>0) foundItems.splice(0,foundItems.length);
+      for(var i in items) {
+        if(items[i].description!==null && items[i].description!=="" && items[i].description.indexOf(searchTerm)!==-1)foundItems.push(items[i]);
+      }
+      // console.log(service.foundItems);
     });
-    return response;
   };
 
+  service.getFoundItems = function() {
+    console.log(foundItems);
+    return foundItems;
+  };
 }
 
 })();
