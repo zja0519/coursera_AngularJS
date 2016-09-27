@@ -13,7 +13,8 @@ function FoundItemsDirective() {
     templateUrl: 'foundItems.html',
     scope: {
       foundItem: '<',
-      onRemove: '&'
+      onRemove: '&',
+      myTitle: '@title'
     },
     controller: FoundItemsDirectiveController,
     controllerAs: 'list',
@@ -30,6 +31,7 @@ function FoundItemsDirectiveController() {
 NarrowItDownControllerFunc.$inject = ['MenuSearchService'];
 function NarrowItDownControllerFunc(MenuSearchServiceFunc) {
   var menu = this;
+  menu.resultHolder = MenuSearchServiceFunc.getResultHolder();
   menu.items = MenuSearchServiceFunc.getFoundItems();
   menu.sendRequest = function() {
       MenuSearchServiceFunc.getMatchedMenuItems(menu.searchTerm);
@@ -45,19 +47,28 @@ MenuSearchServiceFunc.$inject = ['$http', 'ApiBasePath']
 function MenuSearchServiceFunc($http, ApiBasePath) {
   var service = this;
   var foundItems=[];
+  var result = {
+    msg:""
+  };
   service.getMatchedMenuItems = function (searchTerm) {
-    $http({
-        method: "GET",
-        url: (ApiBasePath + "/menu_items.json")
+    if(searchTerm === undefined || searchTerm.length === 0) result.msg = "Nothing found";
+    else {
+      result.msg = "Loading...";
+      $http({
+          method: "GET",
+          url: (ApiBasePath + "/menu_items.json")
       }).then(function (response) {
-      // process result and only keep items that match
-      var items = response.data.menu_items;
-      if(foundItems.length>0) foundItems.splice(0,foundItems.length);
-      for(var i in items) {
-        if(items[i].description!==null && items[i].description!=="" && items[i].description.indexOf(searchTerm)!==-1)foundItems.push(items[i]);
-      }
-      // console.log(service.foundItems);
-    });
+        // process result and only keep items that match
+        var items = response.data.menu_items;
+        if(foundItems.length>0) foundItems.splice(0,foundItems.length);
+        for(var i in items) {
+          if(items[i].description!==undefined && items[i].description!=="" && items[i].description.indexOf(searchTerm)!==-1)foundItems.push(items[i]);
+        }
+        if(foundItems.length===0) result.msg = "Nothing found";
+        else result.msg = "Narrowed list"+"("+String(foundItems.length)+" item(s))";
+        // console.log(service.foundItems);
+      });
+   }
   };
 
   service.getFoundItems = function() {
@@ -67,7 +78,12 @@ function MenuSearchServiceFunc($http, ApiBasePath) {
 
   service.removeItem = function(index) {
     foundItems.splice(index, 1);
+    result.msg = "Narrowed list"+"("+String(foundItems.length)+" item(s))";
   };
+
+  service.getResultHolder = function() {
+    return result;
+  }
 }
 
 })();
