@@ -67,6 +67,8 @@ function MenuSearchServiceFunc($http, ApiBasePath) {
         if(foundItems.length===0) result.msg = "Nothing found";
         else result.msg = "Narrowed list"+"("+String(foundItems.length)+" item(s))";
         // console.log(service.foundItems);
+      }).catch(function (error) {
+        result.msg = "Failed to retrieve data."
       });
    }
   };
