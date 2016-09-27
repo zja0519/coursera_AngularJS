@@ -51,6 +51,7 @@ function MenuSearchServiceFunc($http, ApiBasePath) {
     msg:""
   };
   service.getMatchedMenuItems = function (searchTerm) {
+    if(foundItems.length>0) foundItems.splice(0,foundItems.length);
     if(searchTerm === undefined || searchTerm.length === 0) result.msg = "Nothing found";
     else {
       result.msg = "Loading...";
@@ -60,7 +61,6 @@ function MenuSearchServiceFunc($http, ApiBasePath) {
       }).then(function (response) {
         // process result and only keep items that match
         var items = response.data.menu_items;
-        if(foundItems.length>0) foundItems.splice(0,foundItems.length);
         for(var i in items) {
           if(items[i].description!==undefined && items[i].description!=="" && items[i].description.indexOf(searchTerm)!==-1)foundItems.push(items[i]);
         }
