@@ -1,8 +1,11 @@
 <!-- <h3>Title: {{ list.myTitle }}</h3> -->
+<!-- <h3 class="row" >Narrowed items</h3> -->
 <ol>
   <li ng-repeat="item in list.foundItem">
-    {{ item.description }}
-    <button ng-click="list.onRemove({index: $index});">Remove Item</button>
+    <p>Name: {{item.name}}</p>
+    <p>Short name: {{item.short_name}}</p>
+    <p>Description: {{item.description}}</p>
+    <button ng-click="list.onRemove({index: $index});">Don't want this one!</button>
   </li>
 </ol>
 <!-- <div class="error" ng-if="list.cookiesInList()">WARNING! WARNING! COOKIES DETECTED!</div> -->
