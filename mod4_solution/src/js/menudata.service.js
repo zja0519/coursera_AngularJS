@@ -2,33 +2,39 @@
 'use strict';
 
 angular.module('Data')
+.constant('ApiBasePath', "https://davids-restaurant.herokuapp.com")
 .service('MenuDataService', MenuDataService);
 
 
-//ShoppingListService.$inject = ['$q', '$timeout']
-function MenuDataService() {
+MenuDataService.$inject = ['$http', 'ApiBasePath']
+function MenuDataService($http, ApiBasePath) {
   var service = this;
-  var items = [];
+  var categoryItems=[];
 
-// Pre-populate a no cookie list
-items.push({
-  name: "Sugar",
-  quantity: "2 bags",
-  description: "Sugar used for baking delicious umm... baked goods."
-});
-items.push({
-  name: "flour",
-  quantity: "1 bags",
-  description: "High quality wheat flour. Mix it with water, sugar, 2 raw eggs."
-});
-items.push({
-  name: "Chocolate Chips",
-  quantity: "3 bags",
-  description: "Put these in the dough. No reason, really. Gotta store them somewhere!"
-});
   service.getAllCategories = function() {
-    return items;
+    if(categoryItems.length === 0) {
+      $http({
+          method: "GET",
+          url: (ApiBasePath + "/categories.json")
+      }).then(function (response) {
+        // process result and only keep items that match
+        var items = response.data;
+        for(var i in items) {
+          categoryItems.push(items[i].name);
+        }
+      }).catch(function (error) {
+      });
+    }
+    return categoryItems;
+    // return ["1","2","3"];
+      // var response = $http({
+      //     method: "GET",
+      //     url: (ApiBasePath + "/categories.json")
+      // });
+      //
+      // return response.name;
   };
+
   service.getItemsForCategory = function(categoryShortName) {
 
   };
