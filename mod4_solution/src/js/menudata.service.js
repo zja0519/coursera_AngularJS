@@ -32,12 +32,12 @@ function MenuDataService($http, ApiBasePath) {
           url: (ApiBasePath + "/categories.json")
       }).then(function (response) {
         // process result and only keep items that match
-        var items = response.data;
-        var categoryItems=[];
-        for(var i in items) {
-          categoryItems.push(items[i].name);
-        }
-        return categoryItems;
+        // var items = response.data;
+        // var categoryItems=[];
+        // for(var i in items) {
+        //   categoryItems.push(items[i].name);
+        // }
+        return response.data;
       }).catch(function (error) {
       });
   };
