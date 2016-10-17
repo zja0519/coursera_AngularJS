@@ -29,13 +29,22 @@ function RoutesConfig($stateProvider, $urlRouterProvider) {
         return MenuDataService.getAllCategories();
       }]
     }
+  })
+
+  .state('itemsDetailsPage', {
+    url: '/items-detail/{categoryId}',
+    templateUrl: 'src/templates/items-details.template.html',
+    controller: "ItemsDetailsController as itemsDetails",
+    resolve: {
+      items: ['$stateParams', 'MenuDataService',
+            function ($stateParams, MenuDataService) {
+              return MenuDataService.getItemsForCategory($stateParams.categoryId)
+                .then(function (response) {
+                  return response.data.menu_items;
+                });
+            }]
+    }
   });
-  //
-  // .state('mainList.itemDetail', {
-  //   url: '/item-detail/{itemId}',
-  //   templateUrl: 'src/shoppinglist/templates/item-detail.template.html',
-  //   controller: "ItemDetailController as itemDetail"
-  // });
 
 }
 
